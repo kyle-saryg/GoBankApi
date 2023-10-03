@@ -64,10 +64,12 @@ func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error 
 }
 
 func (s *APIServer) handleGetAccount(w http.ResponseWriter, r *http.Request) error {
-	vars := mux.Vars(r)
+	id := mux.Vars(r)["id"]
+
+	fmt.Println(id)
 
 	// WriteJson returns Error object
-	return WriteJson(w, http.StatusOK, vars)
+	return WriteJson(w, http.StatusOK, Account{})
 }
 
 func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) error {
