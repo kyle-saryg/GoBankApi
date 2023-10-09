@@ -77,7 +77,23 @@ func (s *PostgresStore) DeleteAccount(id int) error {
 }
 
 func (s *PostgresStore) GetAccountByID(id int) (*Account, error) {
-	return nil, nil
+	response := s.db.QueryRow("select * from account where id = $1", id)
+
+	// Decoding row response into empy Account
+	account := new(Account)
+	err := response.Scan(
+		&account.ID,
+		&account.FirstName,
+		&account.LastName,
+		&account.Number,
+		&account.Balance,
+		&account.CreatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return account, nil
 }
 
 func (s *PostgresStore) GetAccounts() ([]*Account, error) {
