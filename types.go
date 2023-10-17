@@ -14,6 +14,11 @@ type Account struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
+type LoginRequest struct {
+	Number   int64  `json:"number"`
+	Password string `json:"password"`
+}
+
 type CreateAccountRequest struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
