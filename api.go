@@ -39,7 +39,21 @@ func (s *APIServer) handleLogin(w http.ResponseWriter, r *http.Request) error {
 		return err // Handle response as json
 	}
 
-	return WriteJson(w, http.StatusOK, acc)
+	if !acc.ValidatePassword(req.Password) {
+		return fmt.Errorf("authentication failed")
+	}
+
+	token, err := createJWT(acc)
+	if err != nil {
+		return err
+	}
+
+	resp := LoginResponse{
+		Token:  token,
+		Number: acc.Number,
+	}
+
+	return WriteJson(w, http.StatusOK, resp)
 }
 
 func NewAPIServer(listenAddr string, store Storage) *APIServer {
