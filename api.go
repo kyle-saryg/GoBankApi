@@ -24,12 +24,22 @@ func (s *APIServer) Run() {
 }
 
 func (s *APIServer) handleLogin(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "POST" {
+		return fmt.Errorf("method not allowed %s", r.Method)
+	}
+
 	req := new(LoginRequest)
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return err
 	}
 
-	return WriteJson(w, http.StatusOK, req)
+	acc, err := s.store.GetAccountByNumber(int(req.Number))
+	// Account not found
+	if err != nil {
+		return err // Handle response as json
+	}
+
+	return WriteJson(w, http.StatusOK, acc)
 }
 
 func NewAPIServer(listenAddr string, store Storage) *APIServer {
@@ -93,17 +103,14 @@ func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Creating account from request
-	account := NewAccount(newAccountRequest.FirstName, newAccountRequest.LastName)
+	account, err := NewAccount(newAccountRequest.FirstName, newAccountRequest.LastName, newAccountRequest.Password)
+	if err != nil {
+		return err
+	}
 	// Inserting account into db
 	if err := s.store.CreateAccount(account); err != nil {
 		return err
 	}
-
-	tokenString, err := createJWT(account)
-	if err != nil {
-		return err
-	}
-	fmt.Println("JWT Token:", tokenString)
 
 	return WriteJson(w, http.StatusOK, account)
 }
@@ -235,5 +242,3 @@ func createJWT(account *Account) (string, error) {
 
 	return token.SignedString([]byte(secret))
 }
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50TnVtYmVyIjo0MTMwMiwiZXhwaXJlc0F0IjoxNTAwMH0.n4PKb7k58j25bTQ6NKOldElPmKBglUk2G-UqXX_YS6Y
