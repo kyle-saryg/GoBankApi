@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -22,7 +23,12 @@ type PostgresStore struct {
 
 // docker run --name gobank -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
 func NewPostgresStore() (*PostgresStore, error) {
-	connStr := "user=postgres dbname=postgres password=password sslmode=disable"
+	dbName := os.Getenv("POSTGRESDB_NAME")
+	dbUser := os.Getenv("POSTGRESDB_USER")
+	dbPwd := os.Getenv("POSTGRESDB_PASSWORD")
+
+	connStr := "user=" + dbUser + " dbname=" + dbName + " password=" + dbPwd + " sslmode=" + "disable"
+	fmt.Println(connStr)
 	db, err := sql.Open("postgres", connStr)
 	// Failed to open db
 	if err != nil {
