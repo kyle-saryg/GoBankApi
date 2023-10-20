@@ -7,35 +7,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Account struct {
-	ID                int       `json:"id"`
-	FirstName         string    `json:"firstName"`
-	LastName          string    `json:"lastName"`
-	Number            int64     `json:"number"`
-	EncryptedPassword string    `json:"encryptedPassword"`
-	Balance           int64     `json:"balance"`
-	CreatedAt         time.Time `json:"createdAt"`
+type APIServer struct {
+	listenAddr string
+	store      Storage
 }
 
-type LoginResponse struct {
-	Number int64  `json:"number"`
-	Token  string `json:"token"`
-}
-
-type LoginRequest struct {
-	Number   int64  `json:"number"`
-	Password string `json:"password"`
-}
-
-type CreateAccountRequest struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Password  string `json:"password"`
-}
-
-type TransferRequest struct {
-	ToAccount int `json:"toAccount"`
-	Amount    int `json:"amount"`
+type ApiError struct {
+	Error string `json:"error"`
 }
 
 func (a *Account) ValidatePassword(pw string) bool {

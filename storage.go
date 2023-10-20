@@ -27,7 +27,7 @@ func NewPostgresStore() (*PostgresStore, error) {
 	dbUser := os.Getenv("POSTGRESDB_USER")
 	dbPwd := os.Getenv("POSTGRESDB_PASSWORD")
 
-	connStr := "user=" + dbUser + " dbname=" + dbName + " password=" + dbPwd + " sslmode=" + "disable"
+	connStr := "port=5432 user=" + dbUser + " dbname=" + dbName + " password=" + dbPwd + " sslmode=" + "disable"
 	fmt.Println(connStr)
 	db, err := sql.Open("postgres", connStr)
 	// Failed to open db
