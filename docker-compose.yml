@@ -1,0 +1,31 @@
+version: '3'
+services:
+  server:
+    image: gobank-api-image:latest
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRESDB_NAME=postgres
+      - POSTGRESDB_USER=postgres
+      - POSTGRESDB_PASSWORD=password
+      - POSTGRESDB_HOST=gobank-db
+      - JWT_SECRET=jugtoz-4tetxy-sibjuD
+    networks:
+      - my-network
+    ports:
+      - 3000:3000
+
+  postgres:
+    image: postgres:latest
+    container_name: gobank-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    networks:
+      - my-network
+    ports:
+      - 5432:5432
+
+networks:
+  my-network:

@@ -5,6 +5,7 @@ FROM golang:latest
 ENV POSTGRESDB_NAME=postgres
 ENV POSTGRESDB_USER=postgres
 ENV POSTGRESDB_PASSWORD=password
+ENV POSTGRESDB_HOST=gobank-db
 ENV JWT_SECRET=hellothere
 
 WORKDIR /gobank
