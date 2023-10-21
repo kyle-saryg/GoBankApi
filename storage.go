@@ -21,13 +21,14 @@ type PostgresStore struct {
 	db *sql.DB
 }
 
-// docker run --name gobank -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
+// docker run --network my-network --name gobank-db -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
 func NewPostgresStore() (*PostgresStore, error) {
 	dbName := os.Getenv("POSTGRESDB_NAME")
 	dbUser := os.Getenv("POSTGRESDB_USER")
 	dbPwd := os.Getenv("POSTGRESDB_PASSWORD")
+	dbHost := os.Getenv("POSTGRESDB_HOST")
 
-	connStr := "port=5432 user=" + dbUser + " dbname=" + dbName + " password=" + dbPwd + " sslmode=" + "disable"
+	connStr := "host=" + dbHost + " port=5432 user=" + dbUser + " dbname=" + dbName + " password=" + dbPwd + " sslmode=" + "disable"
 	fmt.Println(connStr)
 	db, err := sql.Open("postgres", connStr)
 	// Failed to open db
@@ -54,10 +55,10 @@ func (s *PostgresStore) createAccountTable() error {
 	// Create table if it doesn't already exist
 	query := `create table if not exists account (
 		id serial primary key,
-		first_name varchar(50),
-		last_name varchar(50),
+		first_name varchar(100),
+		last_name varchar(100),
 		number serial,
-		encrypted_password varchar(50),
+		encrypted_password bytea,
 		balance serial,
 		created_at timestamp
 	)`
