@@ -28,7 +28,7 @@ Mock banking RESTful api written in Go with Postgresql. Supports account creatio
 
 ## /account
 ### Supported Methods:
- - GET (fetches all accounts)
+ - GET (Fetches all accounts)
     > Response:\
     [{\
     "id": int,\
@@ -58,7 +58,7 @@ Mock banking RESTful api written in Go with Postgresql. Supports account creatio
 
 ## /account/\<id>
 ### Supported Methods:
- - GET (gets account by id, needs JWT in header)
+ - GET (gets account by id, Requires JWT in request header)
     > Header: {\
     "x-jwt-token": string  
     }\
@@ -73,7 +73,7 @@ Mock banking RESTful api written in Go with Postgresql. Supports account creatio
     "createdAt": string (UTC format)\
     }
 
- - DELETE (needs JWT)
+ - DELETE (Requires JWT in request header)
     > Header: {\
     "x-jwt-token": string  
     }\
