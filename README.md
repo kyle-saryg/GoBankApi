@@ -1,7 +1,7 @@
 # GoBank API
 
 ## Summary:
-Mock banking api written in Go with Postgresql. Supports account creation (with password encryption), and utilizes JWT sessions for authorized users (issued upon login). 
+Mock banking RESTful api written in Go with Postgresql. Supports account creation (with password encryption), and utilizes JWT sessions for authorized users (issued upon login). 
 
 ## Usage:
 1. Build gobank-api-image dockerfile (Must be in gobankapi top directory)\
